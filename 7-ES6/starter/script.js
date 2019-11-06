@@ -157,3 +157,7 @@ console.log(ages[full.indexOf(true)]);
 console.log(ages.findIndex(cur => cur >= 18));
 // find() returns element where callback returns true
 console.log(ages.find(cur => cur >= 18));
+
+/**
+ * Spread operator
+ */
