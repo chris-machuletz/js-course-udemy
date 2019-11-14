@@ -1,3 +1,4 @@
+
 // ES5
 var name5 = 'Jane Smith';
 var age5 = 23;
@@ -161,3 +162,147 @@ console.log(ages.find(cur => cur >= 18));
 /**
  * Spread operator
  */
+const h1 = document.querySelector('h1');
+const boxes2 = document.querySelectorAll('.box');
+const all = [...boxes2, h1];
+
+Array.from(all).forEach(cur => cur.style.color = 'purple');
+
+/**
+ * REST parameters
+ * Converts multiple function parameters to an array to be used in the function
+ */
+
+/*
+// ES5
+function isFullAge5() {
+  var argsArr = Array.prototype.slice.call(arguments);
+
+  console.log(argsArr);
+
+  argsArr.forEach(function(cur) {
+    console.log((2019 - cur) >= 18);
+  });
+}
+//isFullAge5(1990, 2005, 1965, 2016, 1987);
+
+// ES6
+function isFullAge6(...years) {
+  years.forEach(cur => console.log((2019 - cur) >= 18))
+}
+isFullAge6(1990, 2005, 1965, 2016, 1987);
+*/
+
+// ES6
+function isFullAge6(fullAge, ...years) {
+  years.forEach(cur => console.log((2019 - cur) >= fullAge))
+}
+isFullAge6(1990, 2005, 1965, 2016, 1987, 18);
+
+/**
+ * Default parameters
+ */
+
+ // ES5
+function SmithPerson5(firstName, yearOfBirth, lastName, nationality) {
+
+  lastName === undefined ? lastName = 'Smith' : lastName = lastName;
+  nationality === undefined ? nationality = 'american' : nationality = nationality;
+
+  this.firstName = firstName;
+  this.lastname = lastName;
+  this.yearOfBirth = yearOfBirth;
+  this.nationality = nationality;
+}
+
+var mark5 = new SmithPerson5('Mark', 1990);
+var emily5 = new SmithPerson5('Emily', 1983, 'Diaz', 'spanish');
+
+// ES6
+function SmithPerson6(firstName, yearOfBirth, lastName = 'Smith', nationality = 'american') {
+  this.firstName = firstName;
+  this.lastname = lastName;
+  this.yearOfBirth = yearOfBirth;
+  this.nationality = nationality;
+}
+
+var mark6 = new SmithPerson6('Mark', 1990);
+var emily6 = new SmithPerson6('Emily', 1983, 'Diaz', 'spanish');
+
+/**
+ * Maps
+ */
+
+const question = new Map();
+question.set('question', 'What is a microphone?');
+question.set(1, 'yes');
+question.set(2, 'no');
+question.set('correct', 1);
+question.set(true, 'Correct answer');
+question.set(false, 'Wrong answer, please try again.');
+
+console.log(question.get('question'));
+console.log(question.size);
+
+// Delete item
+//question.delete(2);
+
+// check if key is in map
+if(question.has(1)) {
+  //question.delete(1);
+  console.log('Key 1 is in the map!')
+}
+
+// emtpy the map
+//question.clear();
+
+// Loop through map
+//question.forEach((value, key) => console.log(`This is ${key}, and it's set to ${value}`));
+
+for(let [key, value] of question.entries()) {
+  //console.log(`This is ${key}, and it's set to ${value}`);
+  if(typeof(key) === 'number') {
+    console.log(`Answer ${key} is ${value}`);
+  }
+}
+
+const ans = parseInt(prompt('Write the correct answer'));
+console.log(question.get(ans === question.get('correct')));
+
+/**
+ * Classes
+ */
+
+ // ES5
+ var Person5 = function(name, yearOfBirth, job) {
+   this.name = name;
+   this.yearOfBirth = yearOfBirth;
+   this.job = job;
+ }
+
+ Person5.prototype.calculateAge = function() {
+   var age = new Date().getFullYear - this.yearOfBirth;
+   console.log(age);
+ }
+
+ var john5 = new Person5('John', 1990, 'teacher');
+
+ // ES6
+ class Person6 {
+   constructor(name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+   }
+   calculateAge() {
+    let age = new Date().getFullYear - this.yearOfBirth;
+    console.log(age);
+   }
+
+   static greeting() {
+     console.log('Hey there');
+   }
+ }
+
+ const john6 = new Person6('John', 1990, 'teacher');
+ Person6.greeting();

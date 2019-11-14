@@ -9,7 +9,106 @@
 <body>
     <h1>Asynchronous JavaScript</h1>
     <script>
+        // const first = () => {
+        //     console.log('First');
+        //     second();
+        //     console.log('End');
+        // }
+        // const second = () => {
+        //     setTimeout(() => {
+        //         console.log('Second');
+        //     }, 2000)
+        // }
+        // first();
+
+
+        // Promises
+        const getIDs = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([432, 563, 123, 764]);
+            }, 1500);
+        });
+
+        const getRecipe = recipeID => {
+            return new Promise((resolve, reject) => {
+                setTimeout(recID => {
+                    resolve({'id': recID, 'author': 'me', 'meal': 'Bread'});
+                }, 1500, recipeID);
+            });
+        };
+        const relatedRecipe = author => {
+            return new Promise((resolve, reject) => {
+                setTimeout(author => {
+                    resolve({'id': 434, 'author': author, 'meal': 'Ayran'})
+                }, 1500, author);
+            })
+        }
+
+        // ES6
+        // getIDs
+        // .then(IDs => {
+        //     console.log(IDs);
+        //     return getRecipe(IDs[2]);
+        // })
+        // .then(recipe => {
+        //     console.log(`Recipe #${recipe.id} from ${recipe.author}: ${recipe.meal}`);
+        //     return relatedRecipe(recipe.author);
+        // })
+        // .then(recipe => {
+        //     console.log(`Related Recipe #${recipe.id} from ${recipe.author}: ${recipe.meal}`)
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
+
+        // // ES8 Async / Await
+        // async function getRecipes () {
+        //     const IDs = await getIDs;
+        //     console.log(IDs);
+        //     const rec = await getRecipe(IDs[2]);
+        //     console.log(rec);
+        //     const relatedRec = await relatedRecipe(rec.author);
+        //     console.log(relatedRec);
+
+        //     return rec;
+        // }
+        // getRecipes().then(recipe => console.log(`Recipe #${recipe.id} from ${recipe.author}: ${recipe.meal}`));
         
+        // Fetch API
+        function getWeather(woeid) {
+            fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+            .then(result => {
+                return result.json();
+            })
+            .then(data => {
+                const today = data.consolidated_weather[0];
+                const the_temp = today.the_temp;
+                const city = data.title;
+                console.log(`It's ${Math.round(the_temp)}°C in ${city} at the moment.`)
+            })
+            .catch( error => console.error(`There was an error fetching weather data for ${woeid}`));
+        }
+        
+        getWeather(2487956);
+        getWeather(44418);
+        
+        // Fetch API Async / Await
+        async function getWeatherAsync(woeid) {
+            const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+            const data = await result.json();
+            const tomorrow = data.consolidated_weather[1];
+            const the_temp = tomorrow.the_temp;
+            const city = data.title;
+            console.log(`Tomorrow, it will be ${the_temp}°C in ${city}.`);
+            return data;
+        }
+        let dataLondon;
+        getWeatherAsync(2487956);
+        getWeatherAsync(44418).then(data => {
+            dataLondon = data;
+            console.log(dataLondon);
+        });
+
     </script>
 </body>
 </html>
