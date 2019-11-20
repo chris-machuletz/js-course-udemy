@@ -8,12 +8,13 @@ export const clearInput = () => {
 
 export const clearResults = () => {
     elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
 }
 
 const limitTitle = (title, limit = 17) => {
     const newTitle = [];
     title.split(' ').reduce((acc, cur) => {
-        if(acc + cur.length < limit) {
+        if (acc + cur.length < limit) {
             newTitle.push(cur);
         }
         return acc + cur.length;
@@ -40,24 +41,25 @@ const renderResult = (recipe) => {
 }
 
 export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+
+    // Render results of current page
     const begin = (page - 1) * resPerPage;
     const end = page * resPerPage;
 
     recipes.slice(begin, end).forEach(renderResult);
-    
+
     // Render pagination buttons
     renderPagination(recipes, page, resPerPage)
 }
 
-const renderButton = (page, type) => `<button class="btn-inline results__btn--${type}" data-to="${type === 'prev' ? page - 1 : page + 1}">
-        <svg class="search__icon">
-            <use href="img/icons.svg#icon-triangle-left"></use>
-        </svg>
+const renderButton = (page, type) => `<button class="btn-inline results__btn--${type}" data-goto="${type === 'prev' ? page - 1 : page + 1}">
         <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
     </button>`;
 
 export const renderPagination = (results, page, resPerPage) => {
-    console.log(results);
     const pages = Math.ceil(results.length / resPerPage);
     let button;
 
