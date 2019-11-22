@@ -17,8 +17,7 @@ const controlSearch = async () => {
     // 1. Get query from view
     const query = searchView.getInput();
 
-    // FOR TESTING
-    // const query = 'pizza';
+    console.log(state);
 
     if (query) {
         // 2. New search object and add to state
@@ -67,6 +66,9 @@ const controlRecipe = async () => {
         recipeView.clearRecipe();
         renderLoader(elements.recipe);
 
+        // Hightlight selected search item
+        if (state.recipe) searchView.highlightSelected(id);
+
         // Create new recipe object
         state.recipe = new Recipe(id);
 
@@ -89,4 +91,17 @@ const controlRecipe = async () => {
 }
 // Add two event listeners
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+// Event listeners for increase and decrease servings buttons
+elements.recipe.addEventListener('click', e => {
+    if (e.target.matches('.servings-dec, .servings-dec *')) {
+        //decrease servings
+        state.recipe.updateServings('dec');
+    } else if (e.target.matches('.servings-inc, .servings-inc *')) {
+        //increase servings
+        state.recipe.updateServings('inc');
+    }
+    recipeView.updateServingsAndIngredients(state.recipe);
+    console.log(state.recipe);
+});
 

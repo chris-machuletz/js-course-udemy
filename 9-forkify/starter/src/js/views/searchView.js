@@ -23,6 +23,14 @@ const limitTitle = (title, limit = 17) => {
     return `${newTitle.join(' ')}...`;
 }
 
+export const highlightSelected = id => {
+    const searchResArr = Array.from(document.querySelectorAll('.results__link'));
+    searchResArr.forEach(el => {
+        el.classList.remove('results__link--active')
+    });
+    document.querySelector(`a[href*="${id}"]`).classList.add('results__link--active');
+}
+
 const renderResult = (recipe) => {
     const singleRecipe = `
         <li>

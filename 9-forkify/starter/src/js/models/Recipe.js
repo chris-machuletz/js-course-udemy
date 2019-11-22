@@ -84,8 +84,19 @@ export default class Recipe {
             return objIng;
         });
         this.ingredients = newIngredients;
+    }
+    updateServings(type) {
+        // Calculate new servings based on type (inc or dec)
+        const newServings = type === 'inc' ? this.servings + 1 : this.servings - 1;
 
+        // Servings must be greater than 0
+        if (newServings > 0) {
+            // Calculate ingredients
+            this.ingredients.forEach(ing => {
+                ing.count = ing.count * (newServings / this.servings);
+            });
 
-
+            this.servings = newServings;
+        }
     }
 }
